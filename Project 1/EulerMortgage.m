@@ -4,7 +4,7 @@ function t = EulerMortgage(h)
 %   INPUT: step size (float)
 %   OUTPUT: time (float)
 
-% init constants
+% init constants 
 y0 = 750000;
 p = 4000;
 r = 0.05;
