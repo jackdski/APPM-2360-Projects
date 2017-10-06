@@ -6,10 +6,11 @@ function t = EulerMortgage(h)
 
 % init constants 
 y0 = 750000;
-p = 4000;
-r = 0.05;
+p1 = 4500;
+p2 = 4000;
+r = 0.03;
 
-% init vectors
+% init vectors for plotting
 arr_size = 100000;
 t_vec = 1:arr_size;
 y_vec = 1:arr_size;
@@ -18,12 +19,13 @@ y_vec = 1:arr_size;
 index = 1;
 t = 0;
 y = y0;
+totalInterest = 0;
 t_vec(index) = t;
 y_vec(index) = y;
 index = index +1;
 
 % approximate loan
-while y > 0
+while t <= 5
    t = t + h;
    y = y + h*(r*y - 12*p);
    
@@ -32,12 +34,22 @@ while y > 0
    index = index+1;
 end
 
-disp(t);
+disp(y);
 
+while y > 0
+   t = t + h;
+   y = y + h*((r + 0.015*sqrt(t-5))*y - 12*p);
+   
+   t_vec(index) = t;
+   y_vec(index) = y;
+   index = index+1;
+end
+
+disp(totalInterest);
 % actual value
-t_actual = linspace(0,t,1000);
-y_actual = (y0 - (12*p)/r)*exp(r*t_actual)+(12*p)/r;
-
+% t_actual = linspace(0,t,1000);
+% y_actual = (y0 - (12*p)/r)*exp(r*t_actual)+(12*p)/r;
+% 
 figure
 yyaxis left
 plot(t_vec, y_vec, '.');
@@ -45,9 +57,9 @@ axis([0 t 0 y0]);
 xlabel('t (yrs)');
 ylabel('Dollars');
 
-yyaxis right
-plot(t_actual, y_actual);
-axis([0 t 0 y0]);
-title('Discrete (B) vs Continuous (O)');
-ylabel('Dollars');
+% yyaxis right
+%plot(t_actual, y_actual);
+%axis([0 t 0 y0]);
+title('Discrete Adjustable Rate Mortgage');
+% ylabel('Dollars');
 end
